@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ErroreResponse } from 'src/app/core/interceptors/error.interceptor';
 import { SnackbarComponent } from './snackbar.component';
 
 @Injectable({
@@ -7,13 +8,22 @@ import { SnackbarComponent } from './snackbar.component';
 })
 export class SnackbarService {
 
-  constructor(private _snackBar: MatSnackBar) { }
+  constructor(private snackBar: MatSnackBar) { }
 
-  openSnackbar(data: string, panelClass: string){
-    console.log(panelClass)
-    this._snackBar.openFromComponent(SnackbarComponent, {
+  openSnackBar(data: string, panelClass: string[]) {
+    this.snackBar.openFromComponent(SnackbarComponent, {
       data,
-      panelClass: 'success-snackbar'
+      verticalPosition: 'top',
+      panelClass,
+      duration: 3000
+    });
+  }
+
+  openErrorSnackBar(errore: ErroreResponse) {
+    this.snackBar.openFromComponent(SnackbarComponent, {
+      duration: 3000,
+      data: errore.message,
+      panelClass: ['red']
     });
   }
 }

@@ -1,5 +1,5 @@
-import { Component, ViewChild } from '@angular/core';
-import { MatSidenav } from '@angular/material/sidenav';
+import { Component } from '@angular/core';
+import { AuthService } from './core/auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -7,6 +7,7 @@ import { MatSidenav } from '@angular/material/sidenav';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  @ViewChild(MatSidenav) sidenav!: MatSidenav;
-  title = 'pizzastoreApp';
+  title = 'pizzastore';
+
+  constructor(public authService: AuthService) {}
 }

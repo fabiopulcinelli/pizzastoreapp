@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
-import { User } from 'src/app/models/user';
+import { User } from 'src/app/model/user';
 import { AuthService } from '../auth.service';
 
 export interface LoginForm extends FormGroup<{
@@ -15,7 +15,7 @@ export interface LoginForm extends FormGroup<{
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
   user?: User;
   destroy$: Subject<boolean> = new Subject();
   constructor(private router: Router, private authService: AuthService, private fb: FormBuilder) { }
@@ -34,10 +34,10 @@ export class LoginComponent implements OnInit {
   }
 
   login(): void {
-    this.authService.login(this.userReactive.getRawValue()).pipe(
-      takeUntil(this.destroy$)
-      ).subscribe(res => {
-        this.authService.setUserLogged(res);
-    });
-  }
+      this.authService.login(this.userReactive.getRawValue()).pipe(
+        takeUntil(this.destroy$)
+        ).subscribe(res => {
+          this.authService.setUserLogged(res);
+      });
+    }
 }

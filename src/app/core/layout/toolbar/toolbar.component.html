@@ -4,7 +4,7 @@
     <button mat-button *ifRole="['ADMIN_ROLE']" (click)="ricerca()">Ricerca Clienti</button>
     <span class="example-spacer"></span>
     <div>
-      <span style="font-size: smaller;">User:</span> {{ (authService.getUserLogged() | async)?.username | uppercase}} 
+      <span style="font-size: smaller;">User:</span> {{ (authService.getUserLogged() | async)?.username}} 
     </div>
     <button mat-button color="warn" (click)="logout()">Logout</button>
-</mat-toolbar>
+  </mat-toolbar>
