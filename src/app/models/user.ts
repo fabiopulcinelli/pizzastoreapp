@@ -5,6 +5,6 @@ export interface User {
     email?: string;
     username?: string;
     password?: string;
-    role?: string;
+    ruoli?: string[]
     token?: string;
 }

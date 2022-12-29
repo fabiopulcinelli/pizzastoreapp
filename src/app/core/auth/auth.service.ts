@@ -1,5 +1,6 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { BehaviorSubject, map, Observable, of, switchMap } from 'rxjs';
 import { User } from 'src/app/models/user';
 
@@ -8,7 +9,7 @@ import { User } from 'src/app/models/user';
 })
 export class AuthService {
 
-  private apiServer = 'http://localhost:8080/api/auth/login';
+  private apiServer = 'http://localhost:8080/api';
   private apiServerUtente = 'http://localhost:8080/api/utente/userInfo';
   private httpOptions = {
     headers: new HttpHeaders({
@@ -16,12 +17,12 @@ export class AuthService {
     })
   }
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   private userLoggedSubject$: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
 
   login(loginForm: User): Observable<User> {
-    return this.http.post<{'jwt-token': string}>(this.apiServer, JSON .stringify(loginForm), this.httpOptions).pipe(
+    return this.http.post<{'jwt-token': string}>(this.apiServer + "/auth/login", JSON .stringify(loginForm), this.httpOptions).pipe(
       switchMap(res => of({ username: loginForm.username, token: res['jwt-token'] }))
     );
   }
@@ -30,16 +31,31 @@ export class AuthService {
     return this.http.get<{ roles: string[] }>(this.apiServerUtente).pipe(map(res => res.roles));
   }
 
-  setUserLogged(utente:User | null) {
-    this.userLoggedSubject$.next(utente);
+  setUserLogged(user:User | null) {
+
+    this.userLoggedSubject$.next(user);
+
+    if(user != null) {
+    this.getUserRoles().subscribe({
+      next: res => user!.ruoli = res.roles,
+      complete: () => {
+        this.userLoggedSubject$.next(user);
+        if(user.ruoli?.find(role => role === "FATTORINO_ROLE")){
+          this.router.navigateByUrl("fattorino/list");
+        } else {
+          this.router.navigateByUrl("welcome");
+        }
+      }
+    });
+    }
   }
 
   getUserLogged(): Observable<User | null> {
     return this.userLoggedSubject$.asObservable();
   }
 
-  getUserRoles(): string | null | undefined{
-    return this.userLoggedSubject$.value ? this.userLoggedSubject$.value.role : null;
+  getUserRoles(): Observable<{roles: string[]}> {
+    return this.http.get<{roles: string[]}>(this.apiServerUtente);
   }
 
   isLoggedIn(): boolean {
