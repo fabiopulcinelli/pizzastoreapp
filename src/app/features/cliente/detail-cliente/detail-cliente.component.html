@@ -37,7 +37,11 @@
 
 
             <div class="form-element">
-                <button mat-raised-button color="primary" type="submit" class="button" *ngIf="urlFlag != 'readOnlyActivated'">Submit Form</button>
+                <button mat-raised-button color="primary" type="submit" class="button" 
+                [disabled]="clienteReactive.invalid" *ngIf="urlFlag != 'readOnlyActivated' && urlFlag != 'searchActivated'">Submit</button>
+            </div>
+            <div class="form-element">
+                <button mat-raised-button color="primary" type="submit" class="button" *ngIf="urlFlag =='searchActivated'">Cerca</button>
             </div>
             <div class="form-element">
                 <button mat-raised-button color="secondary" type="submit" class="button" routerLink="/cliente/list">Back</button>

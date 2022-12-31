@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/core/auth/auth.service';
+import { Cliente } from 'src/app/model/cliente';
 import { DataSearchService } from 'src/app/shared/services/data-search.service';
 import { SnackbarService } from 'src/app/shared/snackbar/snackbar.service';
 import { ClienteService } from '../cliente.service';
@@ -11,7 +12,6 @@ export interface ClienteForm extends FormGroup<{
   nome: FormControl<string>;
   cognome: FormControl<string>;
   indirizzo: FormControl<string>;
-  attivo: FormControl<any>;
 }> { }
 
 @Component({
@@ -34,8 +34,7 @@ export class DetailClienteComponent {
     id: this.fb.control(null),
     nome: this.fb.nonNullable.control('', [Validators.required, Validators.minLength(4)]),
     cognome: this.fb.nonNullable.control('', [Validators.required, Validators.minLength(4)]),
-    indirizzo: this.fb.nonNullable.control('', [Validators.required, Validators.minLength(5), Validators.maxLength(30)]),
-    attivo: this.fb.nonNullable.control('', [Validators.required])
+    indirizzo: this.fb.nonNullable.control('', [Validators.required, Validators.minLength(5), Validators.maxLength(30)])
   });
 
   urlFlag: string = "";
@@ -82,6 +81,9 @@ export class DetailClienteComponent {
     }
 
     if(this.urlFlag == "searchActivated") {
+      //ricerco solo quelli attivi
+      let clienteSearch: Cliente = this.clienteReactive.value;
+      clienteSearch.attivo = true;
       this.clienteService.search(this.clienteReactive.value).subscribe({
         next: clienteItem => this.dataSearchService.setData(clienteItem),
         complete: () => this.router.navigate(['/cliente/list'], {queryParams: {search:"true"}})
