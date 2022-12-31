@@ -1,10 +1,10 @@
 <mat-toolbar color="primary">
     <button mat-button routerLink="/welcome">Home</button>
-    <button mat-button disabled="disabled">Link</button>
-    <button mat-button *ifRole="['ADMIN_ROLE']" (click)="ricerca()">Ricerca Clienti</button>
+    <button mat-button *ifRole="['ROLE_ADMIN']" (click)="ricercaClienti()">Ricerca Clienti</button>
+    <button mat-button *ifRole="['ROLE_PIZZAIOLO']" (click)="ricercaPizze()">Ricerca Pizze</button>
     <span class="example-spacer"></span>
     <div>
-      <span style="font-size: smaller;">User:</span> {{ (authService.getUserLogged() | async)?.username}} 
+      <span style="font-size: smaller;">User:</span> {{ (authService.getUserLogged() | async)?.username}}
     </div>
     <button mat-button color="warn" (click)="logout()">Logout</button>
   </mat-toolbar>

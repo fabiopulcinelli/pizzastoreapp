@@ -8,19 +8,19 @@
           In questa pagina a seconda del tuo ruolo potrai navigare sulle tue possibili azioni!
         </p>
       </mat-card-content>
-      <mat-card-actions *ifRole="['ADMIN_ROLE']">
+      <mat-card-actions *ifRole="['ROLE_ADMIN']">
         <button mat-raised-button color="primary" routerLink="/cliente/list">Vai a Lista Clienti</button>
       </mat-card-actions>
     </mat-card>
   </div>
 
-  <div *ifRole="['PIZZAIOLO_ROLE']">
+  <div *ifRole="['ROLE_PIZZAIOLO']">
     <button mat-raised-button color="primary" routerLink="/pizza/list">Gestione pizze</button>
     <button mat-raised-button color="primary" routerLink="/ordine/create">Inserisci nuovo ordine</button>
     <button mat-raised-button color="primary" routerLink="/ordine/list">Gestione ordini</button>
   </div>
 
-  <div *ifRole="['PROPRIETARIO_ROLE']">
+  <div *ifRole="['ROLE_PROPRIETARIO']">
     <button mat-raised-button color="primary" routerLink="/ordine/report">Report degli ordini</button>
     <button mat-raised-button color="primary" routerLink="/statistiche">Statistiche</button>
   </div>

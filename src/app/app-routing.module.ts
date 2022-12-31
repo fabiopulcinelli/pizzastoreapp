@@ -8,13 +8,12 @@ const routes: Routes = [
     loadChildren: () => import('./features/welcome/welcome.module').then(m => m.WelcomeModule),
     canActivate: [AuthGuard]
   },
-/* TODO
   {
     path: 'cliente',
     loadChildren: () => import('./features/cliente/cliente.module').then(m => m.ClienteModule),
     canActivate: [AuthGuard]
   },
-*/
+
   {
     path: 'login',
     loadChildren: () => import('./core/auth/login/login.module').then(m => m.LoginModule)
