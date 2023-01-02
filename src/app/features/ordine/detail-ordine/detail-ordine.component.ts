@@ -1,15 +1,21 @@
+import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { Cliente } from 'src/app/model/cliente';
+import { User } from 'src/app/model/user';
 import { DataSearchService } from 'src/app/shared/services/data-search.service';
+import { UserService } from 'src/app/shared/services/user.service';
 import { SnackbarService } from 'src/app/shared/snackbar/snackbar.service';
+import { ClienteService } from '../../cliente/cliente.service';
 import { OrdineService } from '../ordine.service';
 
 export interface OrdineForm extends FormGroup<{
   id: FormControl<any>;
-  data: FormControl<Date>;
+  data: FormControl<any>;
   codice: FormControl<string>;
-  costoTotale: FormControl<any>;
+  costo: FormControl<number>;
   closed: FormControl<any>;
   cliente: FormControl<any>;
   fattorino: FormControl<any>;
@@ -22,19 +28,24 @@ export interface OrdineForm extends FormGroup<{
 })
 export class DetailOrdineComponent {
 
-  constructor(private ordineService: OrdineService,
+  clienti: Cliente[] = [];
+  fattorini: User[] = [];
+
+  constructor(private ordineService: OrdineService, private clienteService: ClienteService, private userService: UserService,
     private snackbarService: SnackbarService,
     private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
     private dataSearchService: DataSearchService) {
+      this.clienteService.getAllClienti().subscribe(res => this.clienti = res);
+      this.userService.getAllUsers().subscribe(res => this.fattorini = res);
   }
 
   ordineReactive: OrdineForm = this.fb.group({
     id: this.fb.control(null),
-    data: this.fb.nonNullable.control(new Date(), [Validators.required]),
+    data: this.fb.nonNullable.control(new DatePipe('it-IT').transform(new Date(), 'dd/MM/yyyy'), [Validators.required]),
     codice: this.fb.nonNullable.control('', [Validators.required, Validators.minLength(4)]),
-    costoTotale: this.fb.nonNullable.control('', [Validators.required]),
+    costo: this.fb.nonNullable.control(0, [Validators.required]),
     closed: this.fb.nonNullable.control('', [Validators.required]),
     cliente: this.fb.nonNullable.control('', [Validators.required]),
     fattorino: this.fb.nonNullable.control('', [Validators.required]),
@@ -62,9 +73,9 @@ export class DetailOrdineComponent {
       this.ordineReactive.get('id')?.setValue(id);
       this.ordineService.findById(id).subscribe(res => {
         this.ordineReactive.patchValue(res);
+        console.log(this.ordineReactive.value);
       });
     }
-
   }
 
   handleFormRequest(): void {

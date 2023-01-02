@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
@@ -23,6 +23,7 @@ import { ErrorInterceptor } from './core/interceptors/error.interceptor';
     SharedModule
   ],
   providers: [
+    { provide: LOCALE_ID, useValue: "it-IT" },
     {
       provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true
     },
