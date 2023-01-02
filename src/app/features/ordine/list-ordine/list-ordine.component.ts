@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Cliente } from 'src/app/model/cliente';
 import { Ordine } from 'src/app/model/ordine';
 import { DataSearchService } from 'src/app/shared/services/data-search.service';
 import { DialogComponent } from '../dialog/dialog.component';
@@ -21,11 +22,23 @@ export class ListOrdineComponent {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   urlSearchOperationFlag: string | null = ""
 
+  //dati proprietario
+  clientiDataSource: MatTableDataSource<Cliente> = new MatTableDataSource<Cliente>()
+  displayedClientiColumns: string[] = ['id', 'nome', 'cognome', 'indirizzo', 'attivo'];
+  ricavi: number = 0;
+  ordini: number = 0;
+  pizze: number = 0;
+
   ngOnInit(): void {
     let operation = this.route.snapshot.queryParamMap.get('search');
     this.urlSearchOperationFlag = operation;
     if(operation == 'true') {
       this.dataSource.data = this.dataSearchService.getData();
+    } else if(operation == 'false') {
+      this.clientiDataSource.data = this.dataSearchService.getData();
+      this.ricavi = this.dataSearchService.getRicavi();
+      this.ordini = this.dataSearchService.getOrdini();
+      this.pizze = this.dataSearchService.getPizze();
     } else {
       this.getData();
     }

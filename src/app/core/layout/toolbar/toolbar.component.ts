@@ -25,4 +25,8 @@ export class ToolbarComponent {
   ricercaPizze() {
     this.router.navigate(['/pizza/search'], {queryParams: {operation:"search"}})
   }
+
+  ricercaOrdini() {
+    this.router.navigate(['/ordine/search'], {queryParams: {operation:"search"}})
+  }
 }

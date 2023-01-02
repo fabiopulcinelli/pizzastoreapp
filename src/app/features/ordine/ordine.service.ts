@@ -1,7 +1,10 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Cliente } from 'src/app/model/cliente';
 import { Ordine } from 'src/app/model/ordine';
+import { Stats } from 'src/app/model/stats';
+import { PizzaService } from '../pizza/pizza.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +17,7 @@ export class OrdineService {
           'Content-Type': 'application/json'
         })
       }
-      constructor(private http: HttpClient) {}
+      constructor(private http: HttpClient, private pizzaService: PizzaService) {}
 
 
     getAllOrdini(): Observable<Ordine[]> {
@@ -39,5 +42,21 @@ export class OrdineService {
 
     search(example: Ordine): Observable<Ordine[]> {
       return this.http.post<Ordine[]>(this.apiServer + "/search", example, this.httpOptions);
+    }
+
+    getRicaviTotali(dateInput: Stats): Observable<number> {
+      return this.http.post<number>(this.apiServer + "/ordine/ricaviTotaliBetween", dateInput, this.httpOptions );
+    }
+
+    getOrdiniTotali(dateInput: Stats): Observable<number> {
+      return this.http.post<number>(this.apiServer + "/ordine/ordiniTotaliBetween", dateInput, this.httpOptions );
+    }
+
+    getPizzeTotali(dateInput: Stats): Observable<number> {
+      return this.http.post<number>(this.apiServer + "/ordine/pizzeTotaliOrderedBetween", dateInput, this.httpOptions );
+    }
+
+    getClientiVirtuosi(dateInput: Stats): Observable<Cliente[]> {
+      return this.http.post<Cliente[]>(this.apiServer + "/ordine/clientiVirtuosiWithOrdineBetween", dateInput, this.httpOptions );
     }
 }

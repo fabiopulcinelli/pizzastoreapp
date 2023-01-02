@@ -10,5 +10,5 @@ export interface Ordine {
     closed?: boolean
     cliente?: Cliente
     fattorino?: User
-    pizze?: Pizza[]
+    pizzaIds: number[]
 }
