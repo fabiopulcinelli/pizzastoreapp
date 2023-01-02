@@ -9,6 +9,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './core/auth/auth.interceptor';
 import { SharedModule } from './shared/shared.module';
 import { ErrorInterceptor } from './core/interceptors/error.interceptor';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,7 @@ import { ErrorInterceptor } from './core/interceptors/error.interceptor';
     HttpClientModule,
     SharedModule
   ],
-  providers: [
+  providers: [DatePipe,
     { provide: LOCALE_ID, useValue: "it-IT" },
     {
       provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true

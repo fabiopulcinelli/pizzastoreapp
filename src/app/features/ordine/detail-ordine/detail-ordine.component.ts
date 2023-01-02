@@ -36,6 +36,7 @@ export class DetailOrdineComponent {
     private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
+    private datepipe: DatePipe,
     private dataSearchService: DataSearchService) {
       this.clienteService.getAllClienti().subscribe(res => this.clienti = res);
       this.userService.getAllUsers().subscribe(res => this.fattorini = res);
@@ -88,6 +89,9 @@ export class DetailOrdineComponent {
     }
 
     if (this.urlFlag == "editActivated") {
+      let dataFormata = this.datepipe.transform(this.ordineReactive.value.data, 'yyyy-MM-dd');
+      this.ordineReactive.value.data = dataFormata;
+      console.log(this.ordineReactive.value.data);
       this.ordineService.update(this.ordineReactive.value).subscribe({
         next: clienteItem => this.ordineReactive.patchValue(clienteItem),
         complete: () => this.router.navigate([`/ordine/list`], this.snackbarService.openSnackBar('Operazione effettuata correttamente.', ["blue"])!)

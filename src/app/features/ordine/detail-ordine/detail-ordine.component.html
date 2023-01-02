@@ -10,17 +10,10 @@
         </mat-card-header>
         <form (ngSubmit)="handleFormRequest()" [formGroup]="ordineReactive">
 
-            <!-- cambiare il formato di datepicker 
                 <mat-form-field class="form-element">
-                    <input matInput [matDatepicker]="picker" name="data" type="date" formControlName="data">
+                    <input matInput [matDatepicker]="picker" name="data" formControlName="data">
                     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
-                    <mat-error *ngIf="ordineReactive.get('data')?.hasError('required')">Data obbligatoria</mat-error>
-                </mat-form-field>
-            -->
-
-                <mat-form-field class="form-element">
-                    <input matInput name="data" type="text" formControlName="data" placeholder="inserisci data..."  >
                     <mat-error *ngIf="ordineReactive.get('data')?.hasError('required')">Data obbligatoria</mat-error>
                 </mat-form-field>
 
