@@ -34,7 +34,7 @@ export class AuthService {
       complete: () => {
         this.userLoggedSubject$.next(user);
         if(user.ruoli?.find(role => role === "FATTORINO_ROLE")){
-          this.router.navigateByUrl("fattorino/list");
+          this.router.navigate(["/ordine/list"], {queryParams: {fattorino: "true"}});
         } else {
           this.router.navigateByUrl("welcome");
         }

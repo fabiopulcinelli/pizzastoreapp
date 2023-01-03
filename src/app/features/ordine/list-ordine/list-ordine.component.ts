@@ -31,30 +31,46 @@ export class ListOrdineComponent {
 
   ngOnInit(): void {
     let operation = this.route.snapshot.queryParamMap.get('search');
+    let fattorinoLogged = this.route.snapshot.queryParamMap.get('fattorino')
     this.urlSearchOperationFlag = operation;
     if(operation == 'true') {
       this.dataSource.data = this.dataSearchService.getData();
     } else if(operation == 'false') {
-      this.clientiDataSource.data = this.dataSearchService.getData();
-      this.ricavi = this.dataSearchService.getRicavi();
-      this.ordini = this.dataSearchService.getOrdini();
-      this.pizze = this.dataSearchService.getPizze();
+      setTimeout(() => { 
+        this.clientiDataSource.data = this.dataSearchService.getData();
+        this.ricavi = this.dataSearchService.getRicavi();
+        this.ordini = this.dataSearchService.getOrdini();
+        this.pizze = this.dataSearchService.getPizze();
+      }, 100)
+    } else if(fattorinoLogged) {
+      this.ordineService.getOrdiniPerFattorino().subscribe(res => {
+        this.dataSource.data = res;
+      });
     } else {
       this.getData();
     }
   }
 
   openDialog(idOrdine: number): void {
+    let fattorinoLogged = this.route.snapshot.queryParamMap.get('fattorino')
+
     const dialogRef = this.dialog.open(DialogComponent, {
       width: 'auto',
       data: {idOrdine}
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      
+      if(!fattorinoLogged){
       this.ordineService.getAllOrdini().subscribe(res => {
         this.dataSource.data = res;
       })
-    });
+    } else {
+      this.ordineService.getOrdiniPerFattorino().subscribe(res => {
+        this.dataSource.data = res;
+      });
+    }
+  });
   }
 
 

@@ -1,8 +1,9 @@
 <mat-toolbar color="primary">
-    <button mat-button routerLink="/welcome">Home</button>
+    <button mat-button routerLink="/welcome" [disabled]="toggle()">Home</button>
     <button mat-button *ifRole="['ROLE_ADMIN']" (click)="ricercaClienti()">Ricerca Clienti</button>
     <button mat-button *ifRole="['ROLE_PIZZAIOLO']" (click)="ricercaPizze()">Ricerca Pizze</button>
     <button mat-button *ifRole="['ROLE_PIZZAIOLO']" (click)="ricercaOrdini()">Ricerca Ordini</button>
+    <button mat-button *ifRole="['ROLE_PROPRIETARIO']" (click)="vaiAStatistiche()">Statistiche</button>
     <span class="example-spacer"></span>
     <div>
       <span style="font-size: smaller;">User:</span> {{ (authService.getUserLogged() | async)?.username}}
