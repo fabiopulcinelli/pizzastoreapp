@@ -72,10 +72,6 @@
 
 <div *ngIf="urlSearchOperationFlag == 'false'">
 
-    <div *ifRole="['ROLE_PROPRIETARIO']">
-        <button mat-raised-button color="accent" type="submit" class="button" routerLink="/welcome">Back</button>
-    </div>
-
     <div style=" font-weight: bolder;" align="center">
         Clienti 'Virtuosi' nell'intervallo di date selezionato:
     </div>
@@ -124,4 +120,7 @@
         Numero pizze totali ordinate nell’intervallo selezionato: {{pizze}}
     </div>
 
+    <div *ifRole="['ROLE_PROPRIETARIO']">
+        <button mat-raised-button color="accent" type="submit" class="button" routerLink="/welcome">Back</button>
+    </div>
 </div>

@@ -45,18 +45,18 @@ export class OrdineService {
     }
 
     getRicaviTotali(dateInput: Stats): Observable<number> {
-      return this.http.post<number>(this.apiServer + "/ordine/ricaviTotaliBetween", dateInput, this.httpOptions );
+      return this.http.post<number>(this.apiServer + "/ricaviTotaliBetween", dateInput, this.httpOptions );
     }
 
     getOrdiniTotali(dateInput: Stats): Observable<number> {
-      return this.http.post<number>(this.apiServer + "/ordine/ordiniTotaliBetween", dateInput, this.httpOptions );
+      return this.http.post<number>(this.apiServer + "/ordiniTotaliBetween", dateInput, this.httpOptions );
     }
 
     getPizzeTotali(dateInput: Stats): Observable<number> {
-      return this.http.post<number>(this.apiServer + "/ordine/pizzeTotaliOrderedBetween", dateInput, this.httpOptions );
+      return this.http.post<number>(this.apiServer + "/pizzeTotaliOrderedBetween", dateInput, this.httpOptions );
     }
 
     getClientiVirtuosi(dateInput: Stats): Observable<Cliente[]> {
-      return this.http.post<Cliente[]>(this.apiServer + "/ordine/clientiVirtuosiWithOrdineBetween", dateInput, this.httpOptions );
+      return this.http.post<Cliente[]>(this.apiServer + "/clientiVirtuosiWithOrdineBetween", dateInput, this.httpOptions );
     }
 }

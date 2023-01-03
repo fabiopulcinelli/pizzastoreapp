@@ -41,6 +41,7 @@ export class DetailOrdineComponent {
     private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
+    private datePipe: DatePipe,
     private dateAdapter: DateAdapter<Date>) {
     this.dateAdapter.setLocale('IT');
   }
@@ -196,12 +197,13 @@ export class DetailOrdineComponent {
 
       let dateStart = this.statsOrdineReactive.get('dataInizio')?.value.toISOString();
       let dateFormStart = dateStart?.split('T')[0]!;
+      dateFormStart = this.datePipe.transform(dateFormStart, 'dd-MM-yyyy');
       this.statsOrdineReactive.get('dataInizio')?.setValue(dateFormStart);
 
         let dateEnd = this.statsOrdineReactive.get('dataFine')?.value.toISOString();
         let dateFormEnd = dateEnd?.split('T')[0]!;
+        dateFormEnd = this.datePipe.transform(dateFormEnd, 'dd-MM-yyyy');
         this.statsOrdineReactive.get('dataFine')?.setValue(dateFormEnd);
-  
 
       this.ordineService.getRicaviTotali(this.statsOrdineReactive.value).subscribe({
         next: ricaviItem => this.dataSearchService.setRicavi(ricaviItem),
