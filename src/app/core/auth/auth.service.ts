@@ -3,20 +3,21 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, of, switchMap } from 'rxjs';
 import { User } from 'src/app/model/user';
+import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private apiServer = 'http://localhost:8080/api';
+  private apiServer = environment.baseURL + '/api';
   private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json'
     })
   }
   constructor(private http: HttpClient, private router: Router) { }
-  
+
 
   private userLoggedSubject$: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null)
 
@@ -59,7 +60,7 @@ export class AuthService {
     return this.userLoggedSubject$.value ? this.userLoggedSubject$.value.token : null;
   }
 
-  logout() {    
+  logout() {
     this.setUserLogged(null);
   }
 

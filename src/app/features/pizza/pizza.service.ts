@@ -2,13 +2,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Pizza } from 'src/app/model/pizza';
+import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class PizzaService {
 
-  private apiServer = 'http://localhost:8080/api/pizza';
+  private apiServer = environment.baseURL + '/api/pizza';
     private httpOptions = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json'

@@ -5,13 +5,14 @@ import { Cliente } from 'src/app/model/cliente';
 import { Ordine } from 'src/app/model/ordine';
 import { Stats } from 'src/app/model/stats';
 import { PizzaService } from '../pizza/pizza.service';
+import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrdineService {
 
-  private apiServer = 'http://localhost:8080/api/ordine';
+  private apiServer = environment.baseURL + '/api/ordine';
     private httpOptions = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json'
