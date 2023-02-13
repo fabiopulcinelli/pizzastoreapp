@@ -1,8 +1,8 @@
-import { Component, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Cliente } from 'src/app/model/cliente';
-import { SnackbarService } from 'src/app/shared/snackbar/snackbar.service';
-import { ClienteService } from '../cliente.service';
+import {Component, Inject} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {Cliente} from 'src/app/model/cliente';
+import {SnackbarService} from 'src/app/shared/snackbar/snackbar.service';
+import {ClienteService} from '../cliente.service';
 
 @Component({
   selector: 'app-dialog',
@@ -13,8 +13,8 @@ export class DialogComponent {
   clienteToDelete?: Cliente;
 
   constructor(private clienteService: ClienteService, private snackBarService: SnackbarService,
-    public dialogRef: MatDialogRef<DialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { idCliente: number }) {
+              public dialogRef: MatDialogRef<DialogComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: { idCliente: number }) {
     if (data) {
       this.getCliente(data.idCliente);
     }
@@ -23,7 +23,7 @@ export class DialogComponent {
   getCliente(idCliente: number) {
     this.clienteService.findById(idCliente).subscribe(res => {
       if (res) {
-        this.clienteToDelete = { ...res }
+        this.clienteToDelete = {...res}
       }
     });
   }

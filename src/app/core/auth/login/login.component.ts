@@ -1,14 +1,15 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { Subject, takeUntil } from 'rxjs';
-import { User } from 'src/app/model/user';
-import { AuthService } from '../auth.service';
+import {Component} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
+import {Subject, takeUntil} from 'rxjs';
+import {User} from 'src/app/model/user';
+import {AuthService} from '../auth.service';
 
 export interface LoginForm extends FormGroup<{
   username: FormControl<string>;
   password: FormControl<string>;
-}>{}
+}> {
+}
 
 @Component({
   selector: 'app-login',
@@ -18,12 +19,15 @@ export interface LoginForm extends FormGroup<{
 export class LoginComponent {
   user?: User;
   destroy$: Subject<boolean> = new Subject();
-  constructor(private router: Router, private authService: AuthService, private fb: FormBuilder) { }
-
   userReactive: LoginForm = this.fb.group({
     username: this.fb.nonNullable.control('', [Validators.required, Validators.minLength(3)]),
     password: this.fb.nonNullable.control('', [Validators.required, Validators.minLength(3)]),
   });
+
+  hide = true;
+
+  constructor(private router: Router, private authService: AuthService, private fb: FormBuilder) {
+  }
 
   ngOnDestroy(): void {
     this.destroy$.next(true);
@@ -34,10 +38,10 @@ export class LoginComponent {
   }
 
   login(): void {
-      this.authService.login(this.userReactive.getRawValue()).pipe(
-        takeUntil(this.destroy$)
-        ).subscribe(res => {
-          this.authService.setUserLogged(res);
-      });
-    }
+    this.authService.login(this.userReactive.getRawValue()).pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(res => {
+      this.authService.setUserLogged(res);
+    });
+  }
 }

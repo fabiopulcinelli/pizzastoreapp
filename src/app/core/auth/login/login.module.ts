@@ -1,9 +1,9 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { Routes, RouterModule } from '@angular/router';
-import { LoginComponent } from './login.component';
-import { MaterialModule } from 'src/app/shared/material/material.module';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {RouterModule, Routes} from '@angular/router';
+import {LoginComponent} from './login.component';
+import {MaterialModule} from 'src/app/shared/material/material.module';
 
 const routes: Routes = [
   {
@@ -26,4 +26,5 @@ const routes: Routes = [
     LoginComponent
   ]
 })
-export class LoginModule { }
+export class LoginModule {
+}

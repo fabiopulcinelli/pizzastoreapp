@@ -1,8 +1,8 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, of, switchMap } from 'rxjs';
-import { User } from 'src/app/model/user';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Router} from '@angular/router';
+import {BehaviorSubject, Observable, of, switchMap} from 'rxjs';
+import {User} from 'src/app/model/user';
 import {environment} from "../../../environments/environment";
 
 @Injectable({
@@ -16,47 +16,47 @@ export class AuthService {
       'Content-Type': 'application/json'
     })
   }
-  constructor(private http: HttpClient, private router: Router) { }
-
-
   private userLoggedSubject$: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null)
 
+  constructor(private http: HttpClient, private router: Router) {
+  }
+
   login(loginForm: User): Observable<User> {
-    return this.http.post<{'jwt-token': string}>(this.apiServer + "/auth/login", JSON .stringify(loginForm), this.httpOptions).pipe(
-      switchMap(res => of({ username: loginForm.username, token: res['jwt-token'] }))
+    return this.http.post<{ 'jwt-token': string }>(this.apiServer + "/auth/login", JSON.stringify(loginForm), this.httpOptions).pipe(
+      switchMap(res => of({username: loginForm.username, token: res['jwt-token']}))
     );
   }
 
   setUserLogged(user: User | null) {
     this.userLoggedSubject$.next(user);
-    if(user != null) {
-    this.getUserRoles().subscribe({
-      next: res => user!.ruoli = res.roles,
-      complete: () => {
-        this.userLoggedSubject$.next(user);
-        if(user.ruoli?.find(role => role === "FATTORINO_ROLE")){
-          this.router.navigate(["/ordine/list"], {queryParams: {fattorino: "true"}});
-        } else {
-          this.router.navigateByUrl("welcome");
+    if (user != null) {
+      this.getUserRoles().subscribe({
+        next: res => user!.ruoli = res.roles,
+        complete: () => {
+          this.userLoggedSubject$.next(user);
+          if (user.ruoli?.find(role => role === "FATTORINO_ROLE")) {
+            this.router.navigate(["/ordine/list"], {queryParams: {fattorino: "true"}});
+          } else {
+            this.router.navigateByUrl("welcome");
+          }
         }
-      }
-    });
-  }
+      });
+    }
   }
 
   getUserLogged(): Observable<User | null> {
     return this.userLoggedSubject$.asObservable();
   }
 
-  getUserRoles(): Observable<{roles: string[]}> {
-    return this.http.get<{roles: string[]}>(this.apiServer + "/utente/userInfo");
+  getUserRoles(): Observable<{ roles: string[] }> {
+    return this.http.get<{ roles: string[] }>(this.apiServer + "/utente/userInfo");
   }
 
   isLoggedIn(): boolean {
     return this.userLoggedSubject$.value ? !!this.userLoggedSubject$.value.token : false;
   }
 
-  getUserToken(): string | null | undefined  {
+  getUserToken(): string | null | undefined {
     return this.userLoggedSubject$.value ? this.userLoggedSubject$.value.token : null;
   }
 

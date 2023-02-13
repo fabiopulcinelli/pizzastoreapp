@@ -27,13 +27,13 @@
   border-top-right-radius: 0;
 }
 
-.main-container{
+.main-container {
   margin: 10px;
   display: flex;
   justify-content: center;
 }
 
-.form-container{
+.form-container {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -41,13 +41,15 @@
   gap: 10px;
 }
 
-.row-form-container{
+.row-form-container {
   display: flex;
   flex: 100%;
   margin: auto;
   gap: 10px;
 }
 
-.input-form{
+.input-form {
   flex: auto;
+  width: 212px;
+  height: 78px;
 }

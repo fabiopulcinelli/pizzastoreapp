@@ -1,8 +1,8 @@
-import { Component, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Pizza } from 'src/app/model/pizza';
-import { SnackbarService } from 'src/app/shared/snackbar/snackbar.service';
-import { PizzaService } from '../pizza.service';
+import {Component, Inject} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {Pizza} from 'src/app/model/pizza';
+import {SnackbarService} from 'src/app/shared/snackbar/snackbar.service';
+import {PizzaService} from '../pizza.service';
 
 @Component({
   selector: 'app-dialog',
@@ -14,8 +14,8 @@ export class DialogComponent {
   pizzaToDelete?: Pizza;
 
   constructor(private pizzaService: PizzaService, private snackBarService: SnackbarService,
-    public dialogRef: MatDialogRef<DialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { idPizza: number }) {
+              public dialogRef: MatDialogRef<DialogComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: { idPizza: number }) {
     if (data) {
       this.getPizza(data.idPizza);
     }
@@ -24,7 +24,7 @@ export class DialogComponent {
   getPizza(idPizza: number) {
     this.pizzaService.findById(idPizza).subscribe(res => {
       if (res) {
-        this.pizzaToDelete = { ...res }
+        this.pizzaToDelete = {...res}
       }
     });
   }

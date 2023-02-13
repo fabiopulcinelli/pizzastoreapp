@@ -1,110 +1,123 @@
-<div class="container" align="center" style="padding: 100px;" >
-    <mat-card class="form" >
+<div align="center" class="container" style="padding: 100px;">
+  <mat-card class="form">
 
-        <mat-card-header>
-            <mat-card-title *ngIf="urlFlag =='readOnlyActivated'">Visualizza dettaglio</mat-card-title>
-            <mat-card-title *ngIf="urlFlag =='addActivated'">Inserisci nuovo elemento</mat-card-title>
-            <mat-card-title *ngIf="urlFlag =='editActivated'">Modifica elemento</mat-card-title>
-            <mat-card-title *ngIf="urlFlag =='searchActivated'">Ricerca elemento</mat-card-title>
-            <mat-card-title *ngIf="urlFlag =='reportActivated'">Ricerca Report</mat-card-title>
-            <mat-card-title *ngIf="urlFlag =='statsActivated'">Visualizza Statistiche</mat-card-title>
+    <mat-card-header>
+      <mat-card-title *ngIf="urlFlag =='readOnlyActivated'">Visualizza dettaglio</mat-card-title>
+      <mat-card-title *ngIf="urlFlag =='addActivated'">Inserisci nuovo elemento</mat-card-title>
+      <mat-card-title *ngIf="urlFlag =='editActivated'">Modifica elemento</mat-card-title>
+      <mat-card-title *ngIf="urlFlag =='searchActivated'">Ricerca elemento</mat-card-title>
+      <mat-card-title *ngIf="urlFlag =='reportActivated'">Ricerca Report</mat-card-title>
+      <mat-card-title *ngIf="urlFlag =='statsActivated'">Visualizza Statistiche</mat-card-title>
 
-        </mat-card-header>
-        <form (ngSubmit)="handleFormRequest()" [formGroup]="ordineReactive" *ngIf="urlFlag !='statsActivated'">
+    </mat-card-header>
+    <form (ngSubmit)="handleFormRequest()" *ngIf="urlFlag !='statsActivated'" [formGroup]="ordineReactive">
 
-                <mat-form-field class="form-element">
-                    <input matInput [matDatepicker]="picker" name="data" formControlName="data">
-                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-datepicker #picker></mat-datepicker>
-                    <mat-error *ngIf="ordineReactive.get('data')?.hasError('required')">Data obbligatoria</mat-error>
-                </mat-form-field>
+      <mat-form-field class="form-element">
+        <input [matDatepicker]="picker" formControlName="data" matInput name="data">
+        <mat-datepicker-toggle [for]="picker" matIconSuffix></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="ordineReactive.get('data')?.hasError('required')">Data obbligatoria</mat-error>
+      </mat-form-field>
 
-                <mat-form-field class="form-element" *ngIf="urlFlag != 'reportActivated'">
-                    <input matInput name="codice" type="text" formControlName="codice" placeholder="inserisci codice..." >
-                    <mat-error *ngIf="ordineReactive.get('codice')?.hasError('required')">codice obbligatori</mat-error>
-                    <mat-error *ngIf="ordineReactive.get('codice')?.hasError('minlength')">Il campo codice deve avere almeno 4 caratteri</mat-error>
-                </mat-form-field>
+      <mat-form-field *ngIf="urlFlag != 'reportActivated'" class="form-element">
+        <input formControlName="codice" matInput name="codice" placeholder="inserisci codice..." type="text">
+        <mat-error *ngIf="ordineReactive.get('codice')?.hasError('required')">codice obbligatori</mat-error>
+        <mat-error *ngIf="ordineReactive.get('codice')?.hasError('minlength')">Il campo codice deve avere almeno 4
+          caratteri
+        </mat-error>
+      </mat-form-field>
 
-                <mat-form-field class="form-element" *ngIf="urlFlag == 'readOnlyActivated' || urlFlag == 'searchActivated'">
-                    <mat-label>Costo Totale</mat-label>
-                    <input matInput name="costoTotale" type="number" formControlName="costoTotale" placeholder="inserisci costo totale..." >
-                    <mat-error *ngIf="ordineReactive.get('costoTotale')?.hasError('required')">Costo Totale obbligatorio</mat-error>
-                </mat-form-field>
+      <mat-form-field *ngIf="urlFlag == 'readOnlyActivated' || urlFlag == 'searchActivated'" class="form-element">
+        <mat-label>Costo Totale</mat-label>
+        <input formControlName="costoTotale" matInput name="costoTotale" placeholder="inserisci costo totale..."
+               type="number">
+        <mat-error *ngIf="ordineReactive.get('costoTotale')?.hasError('required')">Costo Totale obbligatorio</mat-error>
+      </mat-form-field>
 
-                <section class="form-element" *ngIf="urlFlag == 'readOnlyActivated' || urlFlag == 'searchActivated'">
-                    <mat-checkbox formControlName="closed">Chiuso</mat-checkbox>
-                </section>
+      <section *ngIf="urlFlag == 'readOnlyActivated' || urlFlag == 'searchActivated'" class="form-element">
+        <mat-checkbox formControlName="closed">Chiuso</mat-checkbox>
+      </section>
 
-                <mat-form-field appearance="fill" class="form-element" *ngIf="urlFlag != 'readOnlyActivated'">
-                    <mat-label>Cliente</mat-label>
-                    <mat-select formControlName="cliente" [compareWith]="compareObjects">
-                        <mat-option value="">Seleziona</mat-option>
-                        <mat-option *ngFor="let clienteItem of clienti" [value]="clienteItem">
-                            {{clienteItem.nome}} {{clienteItem.cognome}}
-                        </mat-option>
-                    </mat-select>
-                    <mat-error *ngIf="ordineReactive.get('cliente')?.hasError('required')">Campo Cliente obbligatorio.</mat-error>
-                  </mat-form-field>
+      <mat-form-field *ngIf="urlFlag != 'readOnlyActivated'" appearance="fill" class="form-element">
+        <mat-label>Cliente</mat-label>
+        <mat-select [compareWith]="compareObjects" formControlName="cliente">
+          <mat-option value="">Seleziona</mat-option>
+          <mat-option *ngFor="let clienteItem of clienti" [value]="clienteItem">
+            {{clienteItem.nome}} {{clienteItem.cognome}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="ordineReactive.get('cliente')?.hasError('required')">Campo Cliente obbligatorio.</mat-error>
+      </mat-form-field>
 
-                  <mat-form-field appearance="fill" class="form-element" *ngIf="urlFlag != 'readOnlyActivated'">
-                    <mat-label>Fattorino</mat-label>
-                    <mat-select formControlName="fattorino" [compareWith]="compareObjects">
-                        <mat-option value="">Seleziona</mat-option>
-                        <mat-option *ngFor="let fattorinoItem of fattorini" [value]="fattorinoItem">
-                            {{fattorinoItem.nome}} {{fattorinoItem.cognome}}
-                        </mat-option>
-                    </mat-select>
-                    <mat-error *ngIf="ordineReactive.get('fattorino')?.hasError('required')">Campo Fattorino obbligatorio.</mat-error>
-                  </mat-form-field>
+      <mat-form-field *ngIf="urlFlag != 'readOnlyActivated'" appearance="fill" class="form-element">
+        <mat-label>Fattorino</mat-label>
+        <mat-select [compareWith]="compareObjects" formControlName="fattorino">
+          <mat-option value="">Seleziona</mat-option>
+          <mat-option *ngFor="let fattorinoItem of fattorini" [value]="fattorinoItem">
+            {{fattorinoItem.nome}} {{fattorinoItem.cognome}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="ordineReactive.get('fattorino')?.hasError('required')">Campo Fattorino obbligatorio.
+        </mat-error>
+      </mat-form-field>
 
-                  <div *ngIf="urlFlag != 'readOnlyActivated'">
-                    <mat-error *ngIf="ordineReactive.get('pizzaIds')?.hasError('required')">Selezionare almeno una pizza</mat-error>
-                  <section class="form-element" *ngFor="let pizzaItem of pizze" >
-                    <mat-checkbox [checked]="doCheck(pizzaItem.id!)" [value]="pizzaItem.id | json" (change)="please($event)" name="pizzaIds" formArrayName="pizzaIds" >{{pizzaItem.descrizione}}</mat-checkbox>
-                </section>
-                  </div>
+      <div *ngIf="urlFlag != 'readOnlyActivated'">
+        <mat-error *ngIf="ordineReactive.get('pizzaIds')?.hasError('required')">Selezionare almeno una pizza</mat-error>
+        <section *ngFor="let pizzaItem of pizze" class="form-element">
+          <mat-checkbox (change)="pizzeSelezionate($event)" [checked]="doCheck(pizzaItem.id!)" [value]="pizzaItem.id | json"
+                        formArrayName="pizzaIds" name="pizzaIds">{{pizzaItem.descrizione}}</mat-checkbox>
+        </section>
+      </div>
 
-            <div class="form-element">
-                <button mat-raised-button color="primary" type="submit" class="button" 
-                [disabled]="ordineReactive.invalid" *ngIf="urlFlag != 'readOnlyActivated' && urlFlag != 'searchActivated'">Submit</button>
-            </div>
-            <div class="form-element">
-                <button mat-raised-button color="primary" type="submit" class="button" *ngIf="urlFlag =='searchActivated'">Cerca</button>
-            </div>
-            <div class="form-element" *ngIf="urlFlag != 'reportActivated'">
-                <button mat-raised-button color="accent" type="submit" class="button" routerLink="/ordine/list">Back</button>
-            </div>
+      <div class="form-element">
+        <button *ngIf="urlFlag != 'readOnlyActivated' && urlFlag != 'searchActivated'" [disabled]="ordineReactive.invalid" class="button" color="primary"
+                mat-raised-button
+                type="submit">Submit
+        </button>
+      </div>
+      <div class="form-element">
+        <button *ngIf="urlFlag =='searchActivated'" class="button" color="primary" mat-raised-button type="submit">
+          Cerca
+        </button>
+      </div>
+      <div *ngIf="urlFlag != 'reportActivated'" class="form-element">
+        <button class="button" color="accent" mat-raised-button routerLink="/ordine/list" type="submit">Back</button>
+      </div>
 
-            <div class="form-element" *ngIf="urlFlag == 'reportActivated'">
-                <button mat-raised-button color="accent" type="submit" class="button" routerLink="/welcome">Back</button>
-            </div>
+      <div *ngIf="urlFlag == 'reportActivated'" class="form-element">
+        <button class="button" color="accent" mat-raised-button routerLink="/welcome" type="submit">Back</button>
+      </div>
 
-        </form>
+    </form>
 
-        <form (ngSubmit)="handleFormRequest()" [formGroup]="statsOrdineReactive" *ngIf="urlFlag =='statsActivated'">
+    <form (ngSubmit)="handleFormRequest()" *ngIf="urlFlag =='statsActivated'" [formGroup]="statsOrdineReactive">
 
-            <mat-form-field appearance="fill" class="form-element">
-                <input matInput [matDatepicker]="picker" name="dataInizio" formControlName="dataInizio" placeholder="dd/MM/yyyy" >
-                <mat-error *ngIf="statsOrdineReactive.get('dataInizio')?.hasError('required')">Data Inizio obbligatoria</mat-error>
-                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-              </mat-form-field>
+      <mat-form-field appearance="fill" class="form-element">
+        <input [matDatepicker]="picker" formControlName="dataInizio" matInput name="dataInizio"
+               placeholder="dd/MM/yyyy">
+        <mat-error *ngIf="statsOrdineReactive.get('dataInizio')?.hasError('required')">Data Inizio obbligatoria
+        </mat-error>
+        <mat-datepicker-toggle [for]="picker" matIconSuffix></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
 
-              <mat-form-field appearance="fill" class="form-element">
-                <input matInput [matDatepicker]="picker1" name="dataFine" formControlName="dataFine" placeholder="dd/MM/yyyy" >
-                <mat-error *ngIf="statsOrdineReactive.get('dataFine')?.hasError('required')">Data Fine obbligatoria</mat-error>
-                <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
-                <mat-datepicker #picker1></mat-datepicker>
-              </mat-form-field>
+      <mat-form-field appearance="fill" class="form-element">
+        <input [matDatepicker]="picker1" formControlName="dataFine" matInput name="dataFine" placeholder="dd/MM/yyyy">
+        <mat-error *ngIf="statsOrdineReactive.get('dataFine')?.hasError('required')">Data Fine obbligatoria</mat-error>
+        <mat-datepicker-toggle [for]="picker1" matIconSuffix></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
 
 
-            <div class="form-element">
-                <button mat-raised-button color="primary" type="submit" class="button" [disabled]="statsOrdineReactive.invalid">Submit Form</button>
-            </div>
-            <div class="form-element">
-                <button mat-raised-button color="accent" type="submit" class="button" routerLink="/welcome">Back</button>
-            </div>
+      <div class="form-element">
+        <button [disabled]="statsOrdineReactive.invalid" class="button" color="primary" mat-raised-button type="submit">
+          Submit Form
+        </button>
+      </div>
+      <div class="form-element">
+        <button class="button" color="accent" mat-raised-button routerLink="/welcome" type="submit">Back</button>
+      </div>
 
-        </form>
-    </mat-card>
+    </form>
+  </mat-card>
 </div>

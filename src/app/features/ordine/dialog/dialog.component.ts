@@ -1,8 +1,8 @@
-import { Component, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Ordine } from 'src/app/model/ordine';
-import { SnackbarService } from 'src/app/shared/snackbar/snackbar.service';
-import { OrdineService } from '../ordine.service';
+import {Component, Inject} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {Ordine} from 'src/app/model/ordine';
+import {SnackbarService} from 'src/app/shared/snackbar/snackbar.service';
+import {OrdineService} from '../ordine.service';
 
 @Component({
   selector: 'app-dialog',
@@ -14,8 +14,8 @@ export class DialogComponent {
   ordineToDelete?: Ordine;
 
   constructor(private ordineService: OrdineService, private snackBarService: SnackbarService,
-    public dialogRef: MatDialogRef<DialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { idOrdine: number }) {
+              public dialogRef: MatDialogRef<DialogComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: { idOrdine: number }) {
     if (data) {
       this.getOrdine(data.idOrdine);
     }
@@ -24,7 +24,7 @@ export class DialogComponent {
   getOrdine(idOrdine: number) {
     this.ordineService.findById(idOrdine).subscribe(res => {
       if (res) {
-        this.ordineToDelete = { ...res }
+        this.ordineToDelete = {...res}
       }
     });
   }

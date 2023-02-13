@@ -1,19 +1,18 @@
-import { DatePipe } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatCheckboxChange } from '@angular/material/checkbox';
-import { DateAdapter } from '@angular/material/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { Cliente } from 'src/app/model/cliente';
-import { Pizza } from 'src/app/model/pizza';
-import { User } from 'src/app/model/user';
-import { DataSearchService } from 'src/app/shared/services/data-search.service';
-import { UserService } from 'src/app/shared/services/user.service';
-import { SnackbarService } from 'src/app/shared/snackbar/snackbar.service';
-import { ClienteService } from '../../cliente/cliente.service';
-import { PizzaService } from '../../pizza/pizza.service';
-import { OrdineService } from '../ordine.service';
+import {DatePipe} from '@angular/common';
+import {Component} from '@angular/core';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {MatCheckboxChange} from '@angular/material/checkbox';
+import {DateAdapter} from '@angular/material/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Cliente} from 'src/app/model/cliente';
+import {Pizza} from 'src/app/model/pizza';
+import {User} from 'src/app/model/user';
+import {DataSearchService} from 'src/app/shared/services/data-search.service';
+import {UserService} from 'src/app/shared/services/user.service';
+import {SnackbarService} from 'src/app/shared/snackbar/snackbar.service';
+import {ClienteService} from '../../cliente/cliente.service';
+import {PizzaService} from '../../pizza/pizza.service';
+import {OrdineService} from '../ordine.service';
 
 export interface OrdineForm extends FormGroup<{
   id: FormControl<any>;
@@ -23,7 +22,8 @@ export interface OrdineForm extends FormGroup<{
   closed: FormControl<any>;
   cliente: FormControl<any>;
   fattorino: FormControl<any>;
-}> { }
+}> {
+}
 
 @Component({
   selector: 'app-detail-ordine',
@@ -32,24 +32,9 @@ export interface OrdineForm extends FormGroup<{
 })
 export class DetailOrdineComponent {
 
-  constructor(private ordineService: OrdineService,
-    private clienteService: ClienteService,
-    private userService: UserService,
-    private pizzaService: PizzaService,
-    private snackbarService: SnackbarService,
-    private dataSearchService: DataSearchService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private fb: FormBuilder,
-    private datePipe: DatePipe,
-    private dateAdapter: DateAdapter<Date>) {
-    this.dateAdapter.setLocale('IT');
-  }
-
   clienti: Cliente[] = [];
   fattorini: User[] = [];
   pizze: Pizza[] = [];
-
   ordineReactive: FormGroup = this.fb.group({
     id: this.fb.control(null),
     data: this.fb.nonNullable.control('', [Validators.required]),
@@ -60,17 +45,27 @@ export class DetailOrdineComponent {
     fattorino: this.fb.nonNullable.control('', [Validators.required]),
     pizzaIds: this.fb.nonNullable.array([], [Validators.required])
   });
-
   statsOrdineReactive: FormGroup = this.fb.group({
     dataInizio: this.fb.nonNullable.control('', [Validators.required]),
     dataFine: this.fb.nonNullable.control('', [Validators.required])
   });
-
-  
-
   urlFlag: string = "";
   errorMessage: string = "";
   date: any;
+
+  constructor(private ordineService: OrdineService,
+              private clienteService: ClienteService,
+              private userService: UserService,
+              private pizzaService: PizzaService,
+              private snackbarService: SnackbarService,
+              private dataSearchService: DataSearchService,
+              private route: ActivatedRoute,
+              private router: Router,
+              private fb: FormBuilder,
+              private datePipe: DatePipe,
+              private dateAdapter: DateAdapter<Date>) {
+    this.dateAdapter.setLocale('IT');
+  }
 
   ngOnInit(): void {
     let operation = this.route.snapshot.queryParamMap.get('operation');
@@ -95,7 +90,7 @@ export class DetailOrdineComponent {
 
     }
 
-    if(this.router.url.includes('report')) {
+    if (this.router.url.includes('report')) {
       this.urlFlag = "reportActivated";
       this.ordineReactive.get('data')?.removeValidators([Validators.required]);
       this.ordineReactive.get('codice')?.removeValidators([Validators.required, Validators.minLength(4)]);
@@ -104,7 +99,7 @@ export class DetailOrdineComponent {
       this.ordineReactive.get('pizzaIds')?.removeValidators([Validators.required])
     }
 
-    if(this.router.url.includes('statistiche')) {
+    if (this.router.url.includes('statistiche')) {
       this.urlFlag = "statsActivated";
     }
 
@@ -114,7 +109,7 @@ export class DetailOrdineComponent {
       this.ordineService.findById(id).subscribe(res => {
         this.date = res.data;
         this.ordineReactive.patchValue(res);
-        
+
         res.pizzaIds?.forEach(element => {
           add.push(new FormControl(element))
         });
@@ -137,7 +132,7 @@ export class DetailOrdineComponent {
   }
 
   handleFormRequest(): void {
-    
+
     if (this.urlFlag == "addActivated") {
 
       let date = this.ordineReactive.get('data')?.value.toISOString();
@@ -147,88 +142,90 @@ export class DetailOrdineComponent {
       console.log(this.ordineReactive.getRawValue());
 
       this.ordineService.create(this.ordineReactive.getRawValue()).subscribe({
-        next: ordineItem => {console.log(ordineItem), this.ordineReactive.patchValue(ordineItem)},
+        next: ordineItem => {
+          console.log(ordineItem), this.ordineReactive.patchValue(ordineItem)
+        },
         complete: () => this.router.navigate([`/ordine/list`], this.snackbarService.openSnackBar('Operazione effettuata correttamente.', ["blue"])!)
       });
     }
 
     if (this.urlFlag == "editActivated") {
 
-      if(this.date != this.ordineReactive.get('data')?.value) {
+      if (this.date != this.ordineReactive.get('data')?.value) {
 
-      let date = this.ordineReactive.get('data')?.value.toISOString();
-      let dateForm = date?.split('T')[0]!;
-      this.ordineReactive.get('data')?.setValue(dateForm);
+        let date = this.ordineReactive.get('data')?.value.toISOString();
+        let dateForm = date?.split('T')[0]!;
+        this.ordineReactive.get('data')?.setValue(dateForm);
 
       }
-      
+
       this.ordineService.update(this.ordineReactive.value).subscribe({
         next: ordineItem => this.ordineReactive.patchValue(ordineItem),
         complete: () => this.router.navigate([`/ordine/list`], this.snackbarService.openSnackBar('Operazione effettuata correttamente.', ["blue"])!)
       });
     }
 
-    if(this.urlFlag == "searchActivated" || this.urlFlag == "reportActivated") {
+    if (this.urlFlag == "searchActivated" || this.urlFlag == "reportActivated") {
 
-      if(this.ordineReactive.get('data')?.value != '') {
+      if (this.ordineReactive.get('data')?.value != '') {
 
-      let date = this.ordineReactive.get('data')?.value.toISOString();
-      let dateForm = date?.split('T')[0]!;
-      this.ordineReactive.get('data')?.setValue(dateForm);
+        let date = this.ordineReactive.get('data')?.value.toISOString();
+        let dateForm = date?.split('T')[0]!;
+        this.ordineReactive.get('data')?.setValue(dateForm);
 
       }
 
-      if(this.ordineReactive.get('cliente')?.value == '') {
+      if (this.ordineReactive.get('cliente')?.value == '') {
         this.ordineReactive.get('cliente')?.setValue(null);
       }
 
-      if(this.ordineReactive.get('fattorino')?.value == '') {
+      if (this.ordineReactive.get('fattorino')?.value == '') {
         this.ordineReactive.get('fattorino')?.setValue(null);
       }
 
       this.ordineService.search(this.ordineReactive.value).subscribe({
         next: ordineItem => this.dataSearchService.setData(ordineItem),
-        complete: () => this.router.navigate(['/ordine/list'], {queryParams: {search:"true"}})
+        complete: () => this.router.navigate(['/ordine/list'], {queryParams: {search: "true"}})
       });
 
     }
 
-    if(this.urlFlag == "statsActivated") {
+    if (this.urlFlag == "statsActivated") {
 
       let dateStart = this.statsOrdineReactive.get('dataInizio')?.value.toISOString();
       let dateFormStart = dateStart?.split('T')[0]!;
       dateFormStart = this.datePipe.transform(dateFormStart, 'dd-MM-yyyy');
       this.statsOrdineReactive.get('dataInizio')?.setValue(dateFormStart);
 
-        let dateEnd = this.statsOrdineReactive.get('dataFine')?.value.toISOString();
-        let dateFormEnd = dateEnd?.split('T')[0]!;
-        dateFormEnd = this.datePipe.transform(dateFormEnd, 'dd-MM-yyyy');
-        this.statsOrdineReactive.get('dataFine')?.setValue(dateFormEnd);
+      let dateEnd = this.statsOrdineReactive.get('dataFine')?.value.toISOString();
+      let dateFormEnd = dateEnd?.split('T')[0]!;
+      dateFormEnd = this.datePipe.transform(dateFormEnd, 'dd-MM-yyyy');
+      this.statsOrdineReactive.get('dataFine')?.setValue(dateFormEnd);
 
       this.ordineService.getRicaviTotali(this.statsOrdineReactive.value).subscribe({
         next: ricaviItem => this.dataSearchService.setRicavi(ricaviItem),
-        complete: () => this.router.navigate(['/ordine/list'], {queryParams: {search:"false"}})
+        complete: () => this.router.navigate(['/ordine/list'], {queryParams: {search: "false"}})
       });
 
       this.ordineService.getOrdiniTotali(this.statsOrdineReactive.value).subscribe({
         next: ordiniItem => this.dataSearchService.setOrdini(ordiniItem),
-        complete: () => this.router.navigate(['/ordine/list'], {queryParams: {search:"false"}})
+        complete: () => this.router.navigate(['/ordine/list'], {queryParams: {search: "false"}})
       });
 
       this.ordineService.getPizzeTotali(this.statsOrdineReactive.value).subscribe({
         next: pizzeItem => this.dataSearchService.setPizze(pizzeItem),
-        complete: () => this.router.navigate(['/ordine/list'], {queryParams: {search:"false"}})
+        complete: () => this.router.navigate(['/ordine/list'], {queryParams: {search: "false"}})
       });
 
       this.ordineService.getClientiVirtuosi(this.statsOrdineReactive.value).subscribe({
         next: clienti => this.dataSearchService.setData(clienti),
-        complete: () => this.router.navigate(['/ordine/list'], {queryParams: {search:"false"}})
+        complete: () => this.router.navigate(['/ordine/list'], {queryParams: {search: "false"}})
       });
 
     }
   }
 
-  please(event: MatCheckboxChange) {
+  pizzeSelezionate(event: MatCheckboxChange) {
     const add: FormArray = this.ordineReactive.get('pizzaIds') as FormArray;
     if (event.source.checked) {
       add.push(new FormControl(event.source.value));
@@ -238,8 +235,8 @@ export class DetailOrdineComponent {
   }
 
   compareObjects(o1: any, o2: any): boolean {
-    if(o1 && o2) {
-    return o1.name === o2.name && o1.id === o2.id;
+    if (o1 && o2) {
+      return o1.name === o2.name && o1.id === o2.id;
     }
     return false;
   }
@@ -247,8 +244,8 @@ export class DetailOrdineComponent {
   doCheck(pizzaId: number): boolean {
 
     const add: FormArray = this.ordineReactive.get('pizzaIds') as FormArray;
-    if(add.value.find((e: number) => e != null)){
-    return add.value.find((element: number) => element == pizzaId);
+    if (add.value.find((e: number) => e != null)) {
+      return add.value.find((element: number) => element == pizzaId);
     }
     return false;
   }

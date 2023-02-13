@@ -1,26 +1,30 @@
 <div>
-    <mat-card style="padding: 100px;">
-      <mat-card-header>
-        <mat-card-title >Benvenuto su Pizza Store!</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <p>
-          In questa pagina a seconda del tuo ruolo potrai navigare sulle tue possibili azioni!
-        </p>
-      </mat-card-content>
-      <mat-card-actions *ifRole="['ROLE_ADMIN']">
-        <button mat-raised-button color="primary" routerLink="/cliente/list">Vai a Lista Clienti</button>
-      </mat-card-actions>
-    </mat-card>
-  </div>
+  <mat-card style="padding: 100px;">
+    <mat-card-header>
+      <mat-card-title>Benvenuto su Pizza Store!</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>
+        In questa pagina a seconda del tuo ruolo potrai navigare sulle tue possibili azioni!
+      </p>
+    </mat-card-content>
+    <mat-card-actions *ifRole="['ROLE_ADMIN']">
+      <button color="primary" mat-raised-button routerLink="/cliente/list">Vai a Lista Clienti</button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+
+<div class="flex-container">
 
   <div *ifRole="['ROLE_PIZZAIOLO']">
-    <button mat-raised-button color="primary" routerLink="/pizza/list">Gestione pizze</button>
-    <button mat-raised-button color="primary" routerLink="/ordine/create">Inserisci nuovo ordine</button>
-    <button mat-raised-button color="primary" routerLink="/ordine/list">Gestione ordini</button>
+    <button class="flex-item" color="primary" mat-raised-button routerLink="/pizza/list">Gestione pizze</button>
+    <button class="flex-item" color="primary" mat-raised-button routerLink="/ordine/create">Inserisci nuovo ordine</button>
+    <button class="flex-item" color="primary" mat-raised-button routerLink="/ordine/list">Gestione ordini</button>
   </div>
 
   <div *ifRole="['ROLE_PROPRIETARIO']">
-    <button mat-raised-button color="primary" routerLink="/ordine/report">Report degli ordini</button>
-    <button mat-raised-button color="primary" routerLink="/ordine/statistiche">Statistiche</button>
+    <button class="flex-item" color="primary" mat-raised-button routerLink="/ordine/report">Report degli ordini</button>
+    <button class="flex-item" color="primary" mat-raised-button routerLink="/ordine/statistiche">Statistiche</button>
   </div>
+
+</div>

@@ -1,13 +1,13 @@
-import { Component, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
-import { Router, ActivatedRoute } from '@angular/router';
-import { Cliente } from 'src/app/model/cliente';
-import { Ordine } from 'src/app/model/ordine';
-import { DataSearchService } from 'src/app/shared/services/data-search.service';
-import { DialogComponent } from '../dialog/dialog.component';
-import { OrdineService } from '../ordine.service';
+import {Component, ViewChild} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatTableDataSource} from '@angular/material/table';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Cliente} from 'src/app/model/cliente';
+import {Ordine} from 'src/app/model/ordine';
+import {DataSearchService} from 'src/app/shared/services/data-search.service';
+import {DialogComponent} from '../dialog/dialog.component';
+import {OrdineService} from '../ordine.service';
 
 @Component({
   selector: 'app-list-ordine',
@@ -16,12 +16,10 @@ import { OrdineService } from '../ordine.service';
 })
 export class ListOrdineComponent {
 
-  constructor(private ordineService: OrdineService, private router: Router, public dialog: MatDialog, private route: ActivatedRoute, private dataSearchService: DataSearchService) {}
   dataSource: MatTableDataSource<Ordine> = new MatTableDataSource<Ordine>();
   displayedColumns: string[] = ['id', 'data', 'codice', 'costoTotale', 'closed', 'cliente', 'fattorino', 'azioni'];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   urlSearchOperationFlag: string | null = ""
-
   //dati proprietario
   clientiDataSource: MatTableDataSource<Cliente> = new MatTableDataSource<Cliente>()
   displayedClientiColumns: string[] = ['id', 'nome', 'cognome', 'indirizzo', 'attivo'];
@@ -29,20 +27,23 @@ export class ListOrdineComponent {
   ordini: number = 0;
   pizze: number = 0;
 
+  constructor(private ordineService: OrdineService, private router: Router, public dialog: MatDialog, private route: ActivatedRoute, private dataSearchService: DataSearchService) {
+  }
+
   ngOnInit(): void {
     let operation = this.route.snapshot.queryParamMap.get('search');
     let fattorinoLogged = this.route.snapshot.queryParamMap.get('fattorino')
     this.urlSearchOperationFlag = operation;
-    if(operation == 'true') {
+    if (operation == 'true') {
       this.dataSource.data = this.dataSearchService.getData();
-    } else if(operation == 'false') {
-      setTimeout(() => { 
+    } else if (operation == 'false') {
+      setTimeout(() => {
         this.clientiDataSource.data = this.dataSearchService.getData();
         this.ricavi = this.dataSearchService.getRicavi();
         this.ordini = this.dataSearchService.getOrdini();
         this.pizze = this.dataSearchService.getPizze();
       }, 100)
-    } else if(fattorinoLogged) {
+    } else if (fattorinoLogged) {
       this.ordineService.getOrdiniPerFattorino().subscribe(res => {
         this.dataSource.data = res;
       });
@@ -60,33 +61,33 @@ export class ListOrdineComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      
-      if(!fattorinoLogged){
-      this.ordineService.getAllOrdini().subscribe(res => {
-        this.dataSource.data = res;
-      })
-    } else {
-      this.ordineService.getOrdiniPerFattorino().subscribe(res => {
-        this.dataSource.data = res;
-      });
-    }
-  });
+
+      if (!fattorinoLogged) {
+        this.ordineService.getAllOrdini().subscribe(res => {
+          this.dataSource.data = res;
+        })
+      } else {
+        this.ordineService.getOrdiniPerFattorino().subscribe(res => {
+          this.dataSource.data = res;
+        });
+      }
+    });
   }
 
 
   getData() {
     this.ordineService.getAllOrdini().subscribe(res => {
       console.log(res),
-      this.dataSource.data = res;
+        this.dataSource.data = res;
     });
   }
-  
+
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
   }
 
   showDetail(id: number) {
-    this.router.navigate(["ordine/", id], {queryParams: {operation:"readOnly"}});
+    this.router.navigate(["ordine/", id], {queryParams: {operation: "readOnly"}});
   }
 
   onClickDelete(id: number) {
@@ -94,11 +95,11 @@ export class ListOrdineComponent {
   }
 
   onClickAddNew() {
-    this.router.navigate(["ordine/create"], {queryParams: {operation:"add"}});
+    this.router.navigate(["ordine/create"], {queryParams: {operation: "add"}});
   }
 
   onClickUpdate(id: number) {
-    this.router.navigate(["ordine/edit/", id], {queryParams: {operation:"edit"}});
+    this.router.navigate(["ordine/edit/", id], {queryParams: {operation: "edit"}});
   }
 
   resetDataSource() {

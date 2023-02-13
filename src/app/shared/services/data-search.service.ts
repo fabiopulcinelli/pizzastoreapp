@@ -1,16 +1,17 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataSearchService {
 
-  constructor() { }
-
   data: any;
   ricavi: number = 0;
-  ordini: number= 0;
+  ordini: number = 0;
   pizze: number = 0;
+
+  constructor() {
+  }
 
   setData(data: any) {
     this.data = data;

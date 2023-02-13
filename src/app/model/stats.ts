@@ -1,4 +1,4 @@
 export interface Stats {
-    dataInizio?: any;
-    dataFine?: any
+  dataInizio?: any;
+  dataFine?: any
 }

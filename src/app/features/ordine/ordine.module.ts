@@ -1,12 +1,12 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ListOrdineComponent } from './list-ordine/list-ordine.component';
-import { RouterModule, Routes } from '@angular/router';
-import { DetailOrdineComponent } from './detail-ordine/detail-ordine.component';
-import { FormsModule } from '@angular/forms';
-import { MaterialModule } from 'src/app/shared/material/material.module';
-import { SharedModule } from 'src/app/shared/shared.module';
-import { DialogComponent } from './dialog/dialog.component';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {ListOrdineComponent} from './list-ordine/list-ordine.component';
+import {RouterModule, Routes} from '@angular/router';
+import {DetailOrdineComponent} from './detail-ordine/detail-ordine.component';
+import {FormsModule} from '@angular/forms';
+import {MaterialModule} from 'src/app/shared/material/material.module';
+import {SharedModule} from 'src/app/shared/shared.module';
+import {DialogComponent} from './dialog/dialog.component';
 
 const routes: Routes = [
   {
@@ -67,4 +67,5 @@ const routes: Routes = [
     MaterialModule
   ]
 })
-export class OrdineModule { }
+export class OrdineModule {
+}

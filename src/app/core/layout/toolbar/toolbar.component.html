@@ -1,12 +1,20 @@
 <mat-toolbar color="primary">
-    <button mat-button routerLink="/welcome" [disabled]="toggle()">Home</button>
-    <button mat-button *ifRole="['ROLE_ADMIN']" (click)="ricercaClienti()">Ricerca Clienti</button>
-    <button mat-button *ifRole="['ROLE_PIZZAIOLO']" (click)="ricercaPizze()">Ricerca Pizze</button>
-    <button mat-button *ifRole="['ROLE_PIZZAIOLO']" (click)="ricercaOrdini()">Ricerca Ordini</button>
-    <button mat-button *ifRole="['ROLE_PROPRIETARIO']" (click)="vaiAStatistiche()">Statistiche</button>
-    <span class="example-spacer"></span>
-    <div>
-      <span style="font-size: smaller;">User:</span> {{ (authService.getUserLogged() | async)?.username}}
-    </div>
-    <button mat-button color="warn" (click)="logout()">Logout</button>
-  </mat-toolbar>
+
+  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <button (click)="ricercaClienti()" *ifRole="['ROLE_ADMIN']" mat-menu-item>Ricerca Clienti <mat-icon>subdirectory_arrow_right</mat-icon></button>
+    <button (click)="ricercaPizze()" *ifRole="['ROLE_PIZZAIOLO']" mat-menu-item>Ricerca Pizze <mat-icon>subdirectory_arrow_right</mat-icon></button>
+    <button (click)="ricercaOrdini()" *ifRole="['ROLE_PIZZAIOLO']" mat-menu-item>Ricerca Ordini <mat-icon>subdirectory_arrow_right</mat-icon></button>
+    <button (click)="vaiAStatistiche()" *ifRole="['ROLE_PROPRIETARIO']" mat-menu-item>Statistiche <mat-icon>subdirectory_arrow_right</mat-icon></button>
+  </mat-menu>
+
+  <button [disabled]="toggle()" mat-button routerLink="/welcome">Home</button>
+
+  <span class="example-spacer"></span>
+  <div>
+    <span style="font-size: smaller;">User:</span> {{ (authService.getUserLogged() | async)?.username}}
+  </div>
+  <button (click)="logout()" color="warn" mat-button>Logout</button>
+</mat-toolbar>

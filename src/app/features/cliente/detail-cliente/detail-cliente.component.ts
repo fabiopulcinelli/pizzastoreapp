@@ -1,18 +1,19 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from 'src/app/core/auth/auth.service';
-import { Cliente } from 'src/app/model/cliente';
-import { DataSearchService } from 'src/app/shared/services/data-search.service';
-import { SnackbarService } from 'src/app/shared/snackbar/snackbar.service';
-import { ClienteService } from '../cliente.service';
+import {Component} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
+import {AuthService} from 'src/app/core/auth/auth.service';
+import {Cliente} from 'src/app/model/cliente';
+import {DataSearchService} from 'src/app/shared/services/data-search.service';
+import {SnackbarService} from 'src/app/shared/snackbar/snackbar.service';
+import {ClienteService} from '../cliente.service';
 
 export interface ClienteForm extends FormGroup<{
   id: FormControl<any>;
   nome: FormControl<string>;
   cognome: FormControl<string>;
   indirizzo: FormControl<string>;
-}> { }
+}> {
+}
 
 @Component({
   selector: 'app-detail-cliente',
@@ -21,23 +22,22 @@ export interface ClienteForm extends FormGroup<{
 })
 export class DetailClienteComponent {
 
-  constructor(private clienteService: ClienteService,
-    private authService: AuthService,
-    private snackbarService: SnackbarService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private fb: FormBuilder,
-    private dataSearchService: DataSearchService) {
-  }
-
   clienteReactive: ClienteForm = this.fb.group({
     id: this.fb.control(null),
     nome: this.fb.nonNullable.control('', [Validators.required, Validators.minLength(4)]),
     cognome: this.fb.nonNullable.control('', [Validators.required, Validators.minLength(4)]),
     indirizzo: this.fb.nonNullable.control('', [Validators.required, Validators.minLength(5), Validators.maxLength(30)])
   });
-
   urlFlag: string = "";
+
+  constructor(private clienteService: ClienteService,
+              private authService: AuthService,
+              private snackbarService: SnackbarService,
+              private route: ActivatedRoute,
+              private router: Router,
+              private fb: FormBuilder,
+              private dataSearchService: DataSearchService) {
+  }
 
   ngOnInit(): void {
     let operation = this.route.snapshot.queryParamMap.get('operation');
@@ -52,7 +52,7 @@ export class DetailClienteComponent {
     if (operation?.includes("add")) {
       this.urlFlag = "addActivated";
     }
-    if(operation?.includes("search")) {
+    if (operation?.includes("search")) {
       this.urlFlag = "searchActivated";
     }
     if (!operation?.includes("add") && !operation?.includes("search")) {
@@ -80,13 +80,13 @@ export class DetailClienteComponent {
       });
     }
 
-    if(this.urlFlag == "searchActivated") {
+    if (this.urlFlag == "searchActivated") {
       //ricerco solo quelli attivi
       let clienteSearch: Cliente = this.clienteReactive.value;
       clienteSearch.attivo = true;
       this.clienteService.search(this.clienteReactive.value).subscribe({
         next: clienteItem => this.dataSearchService.setData(clienteItem),
-        complete: () => this.router.navigate(['/cliente/list'], {queryParams: {search:"true"}})
+        complete: () => this.router.navigate(['/cliente/list'], {queryParams: {search: "true"}})
       });
     }
   }

@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
-import { AuthService } from './core/auth/auth.service';
+import {Component} from '@angular/core';
+import {AuthService} from './core/auth/auth.service';
 import it from '@angular/common/locales/it';
-import { registerLocaleData } from '@angular/common';
+import {registerLocaleData} from '@angular/common';
+
 registerLocaleData(it);
 
 @Component({
@@ -12,5 +13,6 @@ registerLocaleData(it);
 export class AppComponent {
   title = 'pizzastore';
 
-  constructor(public authService: AuthService) {}
+  constructor(public authService: AuthService) {
+  }
 }

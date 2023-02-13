@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthService } from '../../auth/auth.service';
+import {Component} from '@angular/core';
+import {Router} from '@angular/router';
+import {AuthService} from '../../auth/auth.service';
 
 @Component({
   selector: 'app-toolbar',
@@ -8,7 +8,8 @@ import { AuthService } from '../../auth/auth.service';
   styleUrls: ['./toolbar.component.css']
 })
 export class ToolbarComponent {
-  constructor(public authService: AuthService, private router: Router) { }
+  constructor(public authService: AuthService, private router: Router) {
+  }
 
   ngOnInit(): void {
   }
@@ -19,15 +20,15 @@ export class ToolbarComponent {
   }
 
   ricercaClienti() {
-    this.router.navigate(['/cliente/search'], {queryParams: {operation:"search"}})
+    this.router.navigate(['/cliente/search'], {queryParams: {operation: "search"}})
   }
 
   ricercaPizze() {
-    this.router.navigate(['/pizza/search'], {queryParams: {operation:"search"}})
+    this.router.navigate(['/pizza/search'], {queryParams: {operation: "search"}})
   }
 
   ricercaOrdini() {
-    this.router.navigate(['/ordine/search'], {queryParams: {operation:"search"}})
+    this.router.navigate(['/ordine/search'], {queryParams: {operation: "search"}})
   }
 
   vaiAStatistiche() {

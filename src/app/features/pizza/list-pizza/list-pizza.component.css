@@ -1,3 +1,15 @@
 table {
-    width: 100%;
-  }
+  width: 100%;
+}
+
+th.mat-sort-header-sorted {
+  color: black;
+}
+
+.sopra {
+  width: 100%;
+}
+
+.filtra {
+  height: 20px;
+}

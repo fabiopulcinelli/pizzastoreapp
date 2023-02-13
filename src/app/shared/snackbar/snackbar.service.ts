@@ -1,14 +1,15 @@
-import { Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { ErroreResponse } from 'src/app/core/interceptors/error.interceptor';
-import { SnackbarComponent } from './snackbar.component';
+import {Injectable} from '@angular/core';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {ErroreResponse} from 'src/app/core/interceptors/error.interceptor';
+import {SnackbarComponent} from './snackbar.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SnackbarService {
 
-  constructor(private snackBar: MatSnackBar) { }
+  constructor(private snackBar: MatSnackBar) {
+  }
 
   openSnackBar(data: string, panelClass: string[]) {
     this.snackBar.openFromComponent(SnackbarComponent, {

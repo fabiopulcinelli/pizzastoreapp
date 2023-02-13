@@ -1,129 +1,135 @@
-<div style="padding: 20px;" *ngIf="urlSearchOperationFlag != 'false'">
-    <button mat-icon-button color="primary" (click)="onClickAddNew()" *ifRole="['ROLE_PIZZAIOLO']"><mat-icon>add</mat-icon></button>
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-        <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef> ID </th>
-            <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-        </ng-container>
+<div *ngIf="urlSearchOperationFlag != 'false'" style="padding: 20px;">
+  <button (click)="onClickAddNew()" *ifRole="['ROLE_PIZZAIOLO']" color="primary" mat-icon-button>
+    <mat-icon>add</mat-icon>
+  </button>
+  <table [dataSource]="dataSource" class="mat-elevation-z8" mat-table>
+    <ng-container matColumnDef="id">
+      <th *matHeaderCellDef mat-header-cell> ID</th>
+      <td *matCellDef="let element" mat-cell> {{element.id}} </td>
+    </ng-container>
 
-        <ng-container matColumnDef="data">
-            <th mat-header-cell *matHeaderCellDef> DATA </th>
-            <td mat-cell *matCellDef="let element"> {{element.data | date: 'dd/MM/yyyy'}} </td>
-        </ng-container>
+    <ng-container matColumnDef="data">
+      <th *matHeaderCellDef mat-header-cell> DATA</th>
+      <td *matCellDef="let element" mat-cell> {{element.data | date: 'dd/MM/yyyy'}} </td>
+    </ng-container>
 
-        <ng-container matColumnDef="codice">
-            <th mat-header-cell *matHeaderCellDef> CODICE </th>
-            <td mat-cell *matCellDef="let element"> {{element.codice}} </td>
-        </ng-container>
+    <ng-container matColumnDef="codice">
+      <th *matHeaderCellDef mat-header-cell> CODICE</th>
+      <td *matCellDef="let element" mat-cell> {{element.codice}} </td>
+    </ng-container>
 
-        <ng-container matColumnDef="costoTotale">
-            <th mat-header-cell *matHeaderCellDef> COSTO TOTALE </th>
-            <td mat-cell *matCellDef="let element"> {{element.costo}} </td>
-        </ng-container>
+    <ng-container matColumnDef="costoTotale">
+      <th *matHeaderCellDef mat-header-cell> COSTO TOTALE</th>
+      <td *matCellDef="let element" mat-cell> {{element.costo}} </td>
+    </ng-container>
 
-        <ng-container matColumnDef="closed">
-            <th mat-header-cell *matHeaderCellDef> CLOSED </th>
-            <td mat-cell *matCellDef="let element"> {{element.closed?'SI':'NO'}} </td>
-        </ng-container>
+    <ng-container matColumnDef="closed">
+      <th *matHeaderCellDef mat-header-cell> CLOSED</th>
+      <td *matCellDef="let element" mat-cell> {{element.closed ? 'SI' : 'NO'}} </td>
+    </ng-container>
 
-        <ng-container matColumnDef="cliente">
-            <th mat-header-cell *matHeaderCellDef> CLIENTE </th>
-            <td mat-cell *matCellDef="let element"> {{element.cliente.nome}} {{element.cliente.cognome}}</td>
-        </ng-container>
+    <ng-container matColumnDef="cliente">
+      <th *matHeaderCellDef mat-header-cell> CLIENTE</th>
+      <td *matCellDef="let element" mat-cell> {{element.cliente.nome}} {{element.cliente.cognome}}</td>
+    </ng-container>
 
-        <ng-container matColumnDef="fattorino">
-            <th mat-header-cell *matHeaderCellDef> FATTORINO </th>
-            <td mat-cell *matCellDef="let element"> {{element.fattorino.nome}} {{element.fattorino.cognome}} </td>
-        </ng-container>
+    <ng-container matColumnDef="fattorino">
+      <th *matHeaderCellDef mat-header-cell> FATTORINO</th>
+      <td *matCellDef="let element" mat-cell> {{element.fattorino.nome}} {{element.fattorino.cognome}} </td>
+    </ng-container>
 
-        <ng-container matColumnDef="azioni">
-            <th mat-header-cell *matHeaderCellDef> AZIONI </th>
-            <td mat-cell *matCellDef="let element">
-                <button mat-icon-button color="primary"
-                    (click)="showDetail(element.id)" *ifRole="['ROLE_PIZZAIOLO']">
-                    <mat-icon>visibility</mat-icon>
-                </button>
-                <button mat-icon-button style="color:yellow;"
-                    (click)="onClickUpdate(element.id)" *ifRole="['ROLE_PIZZAIOLO']">
-                    <mat-icon>edit</mat-icon>
-                </button>
-                <button mat-icon-button color="warn"
-                    (click)="onClickDelete(element.id)" *ifRole="['ROLE_PIZZAIOLO']">
-                    <mat-icon>delete</mat-icon>
-                </button>
-                <button mat-icon-button color="warn"
-                (click)="onClickDelete(element.id)" *ifRole="['ROLE_FATTORINO']">
-                <mat-icon>delete</mat-icon>
-            </button>
-            </td>
+    <ng-container matColumnDef="azioni">
+      <th *matHeaderCellDef mat-header-cell> AZIONI</th>
+      <td *matCellDef="let element" mat-cell>
+        <button (click)="showDetail(element.id)" *ifRole="['ROLE_PIZZAIOLO']"
+                color="primary" mat-icon-button>
+          <mat-icon>visibility</mat-icon>
+        </button>
+        <button (click)="onClickUpdate(element.id)" *ifRole="['ROLE_PIZZAIOLO']"
+                mat-icon-button style="color:yellow;">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button (click)="onClickDelete(element.id)" *ifRole="['ROLE_PIZZAIOLO']"
+                color="warn" mat-icon-button>
+          <mat-icon>delete</mat-icon>
+        </button>
+        <button (click)="onClickDelete(element.id)" *ifRole="['ROLE_FATTORINO']"
+                color="warn" mat-icon-button>
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
 
-        </ng-container>
+    </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
 
-    </table>
+  </table>
 
-    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
-    <div *ifRole="['ROLE_PIZZAIOLO']">
-        <button mat-raised-button color="accent" type="submit" class="button" (click)="resetDataSource()" *ngIf="urlSearchOperationFlag=='true'">Back</button>
-    </div>
-    <div *ifRole="['ROLE_PROPRIETARIO']">
-        <button mat-raised-button color="accent" type="submit" class="button" (click)="resetDataSource()" *ngIf="urlSearchOperationFlag=='true'">Back</button>
-    </div>
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  <div *ifRole="['ROLE_PIZZAIOLO']">
+    <button (click)="resetDataSource()" *ngIf="urlSearchOperationFlag=='true'" class="button" color="accent" mat-raised-button
+            type="submit">Back
+    </button>
+  </div>
+  <div *ifRole="['ROLE_PROPRIETARIO']">
+    <button (click)="resetDataSource()" *ngIf="urlSearchOperationFlag=='true'" class="button" color="accent" mat-raised-button
+            type="submit">Back
+    </button>
+  </div>
 </div>
 
 <div *ngIf="urlSearchOperationFlag == 'false'">
 
-    <div style=" font-weight: bolder;" align="center">
-        Clienti 'Virtuosi' nell'intervallo di date selezionato:
-    </div>
+  <div align="center" style=" font-weight: bolder;">
+    Clienti 'Virtuosi' nell'intervallo di date selezionato:
+  </div>
 
-    <table mat-table [dataSource]="clientiDataSource" class="mat-elevation-z8">
-        <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef> ID </th>
-            <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-        </ng-container>
+  <table [dataSource]="clientiDataSource" class="mat-elevation-z8" mat-table>
+    <ng-container matColumnDef="id">
+      <th *matHeaderCellDef mat-header-cell> ID</th>
+      <td *matCellDef="let element" mat-cell> {{element.id}} </td>
+    </ng-container>
 
-        <ng-container matColumnDef="nome">
-            <th mat-header-cell *matHeaderCellDef> NOME </th>
-            <td mat-cell *matCellDef="let element"> {{element.nome}} </td>
-        </ng-container>
+    <ng-container matColumnDef="nome">
+      <th *matHeaderCellDef mat-header-cell> NOME</th>
+      <td *matCellDef="let element" mat-cell> {{element.nome}} </td>
+    </ng-container>
 
-        <ng-container matColumnDef="cognome">
-            <th mat-header-cell *matHeaderCellDef> COGNOME </th>
-            <td mat-cell *matCellDef="let element"> {{element.cognome}} </td>
-        </ng-container>
+    <ng-container matColumnDef="cognome">
+      <th *matHeaderCellDef mat-header-cell> COGNOME</th>
+      <td *matCellDef="let element" mat-cell> {{element.cognome}} </td>
+    </ng-container>
 
-        <ng-container matColumnDef="indirizzo">
-            <th mat-header-cell *matHeaderCellDef> INDIRIZZO </th>
-            <td mat-cell *matCellDef="let element"> {{element.indirizzo}} </td>
-        </ng-container>
+    <ng-container matColumnDef="indirizzo">
+      <th *matHeaderCellDef mat-header-cell> INDIRIZZO</th>
+      <td *matCellDef="let element" mat-cell> {{element.indirizzo}} </td>
+    </ng-container>
 
-        <ng-container matColumnDef="attivo">
-            <th mat-header-cell *matHeaderCellDef> ATTIVO </th>
-            <td mat-cell *matCellDef="let element"> {{element.attivo?'SI':'NO'}} </td>
-        </ng-container>
+    <ng-container matColumnDef="attivo">
+      <th *matHeaderCellDef mat-header-cell> ATTIVO</th>
+      <td *matCellDef="let element" mat-cell> {{element.attivo ? 'SI' : 'NO'}} </td>
+    </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="displayedClientiColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedClientiColumns;"></tr>
+    <tr *matHeaderRowDef="displayedClientiColumns" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: displayedClientiColumns;" mat-row></tr>
 
-    </table>
+  </table>
 
-    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
-        aria-label="Select page of users"></mat-paginator>
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" aria-label="Select page of users"
+                 showFirstLastButtons></mat-paginator>
 
-    <div class="stats">
-        Ricavi totali nell’intervallo selezionato: {{ricavi}} <br>
-    </div>
-    <div class="stats">
-        Numero ordini totali nell’intervallo selezionato: {{ordini}} <br>
-    </div>
-    <div class="stats">
-        Numero pizze totali ordinate nell’intervallo selezionato: {{pizze}}
-    </div>
+  <div class="stats">
+    Ricavi totali nell’intervallo selezionato: {{ricavi}} <br>
+  </div>
+  <div class="stats">
+    Numero ordini totali nell’intervallo selezionato: {{ordini}} <br>
+  </div>
+  <div class="stats">
+    Numero pizze totali ordinate nell’intervallo selezionato: {{pizze}}
+  </div>
 
-    <div *ifRole="['ROLE_PROPRIETARIO']">
-        <button mat-raised-button color="accent" type="submit" class="button" routerLink="/welcome">Back</button>
-    </div>
+  <div *ifRole="['ROLE_PROPRIETARIO']">
+    <button class="button" color="accent" mat-raised-button routerLink="/welcome" type="submit">Back</button>
+  </div>
 </div>
